@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FZX MODS - Premium Bike Modifications & Accessories</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.7.0/dist/vanilla-tilt.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;700&display=swap');
+        
+        :root {
+            --primary: #ff3e00;
+            --secondary: #2b2b2b;
+            --accent: #f5f5f5;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #111;
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        .logo {
+            font-family: 'Bebas Neue', cursive;
+            letter-spacing: 2px;
+        }
+        
+        .product-card {
+            transition: all 0.3s ease;
+            background: rgba(43, 43, 43, 0.7);
+            backdrop-filter: blur(10px);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(255, 62, 0, 0.3);
+        }
+        
+        #bikeScene {
+            height: 400px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .chat-window {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            background: rgba(43, 43, 43, 0.9);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.5);
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .chat-window.active {
+            transform: translateY(0);
+        }
+        
+        .chat-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 1001;
+            box-shadow: 0 4px 10px rgba(255, 62, 0, 0.3);
+        }
+        
+        .cart-window {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 450px;
+            height: 100vh;
+            background: rgba(43, 43, 43, 0.95);
+            transition: right 0.3s ease;
+            z-index: 999;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .cart-window.active {
+            right: 0;
+        }
+        
+        .cart-btn {
+            position: relative;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @media (max-width: 768px) {
+            .cart-window {
+                width: 100%;
+                right: -100%;
+            }
+            
+            .cart-window.active {
+                right: 0;
+            }
+            
+            .chat-window {
+                width: 100%;
+                right: 0;
+                bottom: 0;
+                height: 70vh;
+                border-radius: 15px 15px 0 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen">
+        <!-- Navbar -->
+        <nav class="bg-black bg-opacity-80 sticky top-0 z-50 backdrop-filter backdrop-blur-lg">
+            <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+                <div class="flex items-center">
+                    <div class="w-14 h-14 mr-3">
+                        <img src="https://dynamic.design.com/asset/logo/370a4730-21d7-4710-91e2-1a9e839ed063/logo-search-grid-1x?logoTemplateVersion=1&amp;v=638881969352100000&amp;text=FZX+MODS+&amp;layout=auto&amp;colorpalette=grayscale" alt="FZX MODS logo - minimalistic motorcycle silhouette with orange accent and bold FZX MODS text" class="w-full h-full object-contain">
+                    </div>
+                    <h1 class="logo text-3xl text-white">FZX <span class="text-orange-500">MODS</span></h1>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#home" class="text-white hover:text-orange-500 transition">Home</a>
+                    <a href="#products" class="text-white hover:text-orange-500 transition">Products</a>
+                    <a href="#about" class="text-white hover:text-orange-500 transition">About</a>
+                    <a href="#contact" class="text-white hover:text-orange-500 transition">Contact</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="cart-btn text-white p-2 relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                        </svg>
+                        <div class="cart-count hidden">0</div>
+                    </button>
+                    <button class="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition">Login</button>
+                    <button class="md:hidden text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section with 3D Bike -->
+        <section id="home" class="relative">
+            <div id="bikeScene"></div>
+            <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+            <div class="container mx-auto px-4 absolute inset-0 flex flex-col justify-center">
+                <div class="max-w-2xl">
+                    <h1 class="text-5xl md:text-7xl font-bold text-white mb-4 logo">RIDE <span class="text-orange-500">CUSTOM</span></h1>
+                    <p class="text-lg text-gray-300 mb-8">Premium motorcycle modifications and accessories for the ultimate riding experience. Enhance your bike's performance and style with our exclusive parts.</p>
+                    <a href="#products" class="bg-orange-500 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-orange-600 transition inline-block">Shop Now</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section id="products" class="py-16 bg-gradient-to-b from-gray-900 to-black">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-white mb-4">OUR PRODUCTS</h2>
+                    <div class="w-24 h-1 bg-orange-500 mx-auto"></div>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    <!-- Product 1 -->
+                    <div class="product-card rounded-xl p-6 transition-all duration-300" data-tilt data-tilt-scale="1.05">
+                        <div class="relative h-48 w-full mb-4 rounded-lg overflow-hidden">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSKJmNtGJrbGCMSIGbVLLJyP_w6JfOblhWlWQ7G8gb6Nk06okshCYIYzhpUNrQm0wtk9Q&amp;usqp=CAU" class="sFlh5c FyHeAf" alt="AKRAPOVIC EXHAUST MULTICOLOUR – Moto Mores" jsname="JuXqh" style="max-width: 1500px; height: 246px; margin: 0px; width: 276px;" data-atf="true" data-iml="1342.7999999988824" jsaction="" class="sFlh5c FyHeAf iPVvYb" style="max-width: 1198px; height: 413px; margin: 0px; width: 313px;" alt="Akrapovic Replica Exhaust With DB Killer – Darpansarvanstore" role="button" tabindex="0" aria-label="Akrapovic Replica Exhaust With DB Killer – Darpansarvanstore Search inside image" aria-pressed="false" jsname="kn3ccd" alt="High-performance exhaust system for FZX motorcycles with chrome finish and carbon fiber tips" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 hover:opacity-100 transition">
+                                <button class="add-to-cart bg-orange-500 text-white px-4 py-2 rounded-full" data-product="1">Add to Cart</button>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-2">akrapovic Exhaust</h3>
+                        <p class="text-gray-400 mb-3">High-performance exhaust system for maximum power and unique sound.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-orange-500 font-bold text-xl">2000 RS</span>
+                            <div class="flex space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                                <span class="text-gray-300">4.8</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 2 -->
+                    <div class="product-card rounded-xl p-6 transition-all duration-300" data-tilt data-tilt-scale="1.05">
+                        <div class="relative h-48 w-full mb-4 rounded-lg overflow-hidden">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/8945be64-d102-4d83-ba3e-f4c4ae9679df.png" alt="LED headlight assembly for FZX bikes with halo ring and adaptive lighting technology" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 hover:opacity-100 transition">
+                                <button class="add-to-cart bg-orange-500 text-white px-4 py-2 rounded-full" data-product="2">Add to Cart</button>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Xtreme LED Headlight</h3>
+                        <p class="text-gray-400 mb-3">Ultra-bright LED headlight with halo ring for improved visibility.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-orange-500 font-bold text-xl">Rs 4000.99</span>
+                            <div class="flex space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                                <span class="text-gray-300">4.9</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 3 -->
+                    <div class="product-card rounded-xl p-6 transition-all duration-300" data-tilt data-tilt-scale="1.05">
+                        <div class="relative h-48 w-full mb-4 rounded-lg overflow-hidden">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/29abb48e-fbe6-4ab8-8356-b8b6cb7e5f6c.png" alt="Carbon fiber fuel tank cover with FZX MODS branding and matte finish" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 hover:opacity-100 transition">
+                                <button class="add-to-cart bg-orange-500 text-white px-4 py-2 rounded-full" data-product="3">Add to Cart</button>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Carbon Fiber Tank Cover</h3>
+                        <p class="text-gray-400 mb-3">Lightweight carbon fiber fuel tank cover for enhanced aesthetics.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-orange-500 font-bold text-xl">Rs 2490</span>
+                            <div class="flex space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                                <span class="text-gray-300">4.7</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 4 -->
+                    <div class="product-card rounded-xl p-6 transition-all duration-300" data-tilt data-tilt-scale="1.05">
+                        <div class="relative h-48 w-full mb-4 rounded-lg overflow-hidden">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/8de958ba-6e61-4df7-8a00-207fb103fdef.png" alt="Performance air filter system with washable cotton material for FZX engines" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 hover:opacity-100 transition">
+                                <button class="add-to-cart bg-orange-500 text-white px-4 py-2 rounded-full" data-product="4">Add to Cart</button>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Performance Air Filter</h3>
+                        <p class="text-gray-400 mb-3">High-flow air filter for improved engine performance and efficiency.</p>
+                        <div class="flex justify-between items-center">
+                             <span class="text-orange-500 font-bold text-xl">Rs 2490</span>
+                            <div class="flex space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                                <span class="text-gray-300">4.6</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 5 -->
+                    <div class="product-card rounded-xl p-6 transition-all duration-300" data-tilt data-tilt-scale="1.05">
+                        <div class="relative h-48 w-full mb-4 rounded-lg overflow-hidden">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5df8acc5-6051-43f3-9ba5-820affbb3a64.png" alt="Adjustable rear shock absorber set with progressive spring rate technology" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 hover:opacity-100 transition">
+                                <button class="add-to-cart bg-orange-500 text-white px-4 py-2 rounded-full" data-product="5">Add to Cart</button>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Pro Suspension Kit</h3>
+                        <p class="text-gray-400 mb-3">Adjustable rear shock absorbers for superior handling and comfort.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-orange-500 font-bold text-xl">Rs 19,999 </span>
+                            <div class="flex space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                                <span class="text-gray-300">4.8</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 6 -->
+                    <div class="product-card rounded-xl p-6 transition-all duration-300" data-tilt data-tilt-scale="1.05">
+                        <div class="relative h-48 w-full mb-4 rounded-lg overflow-hidden">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f84e52c9-0c33-4c4b-852d-4806d31ba835.png" alt="Digital speedometer with multi-color display and Bluetooth connectivity" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 hover:opacity-100 transition">
+                                <button class="add-to-cart bg-orange-500 text-white px-4 py-2 rounded-full" data-product="6">Add to Cart</button>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Digital Speedometer</h3>
+                        <p class="text-gray-400 mb-3">Modern digital display with multiple functions and connectivity.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-orange-500 font-bold text-xl">Rs 15,000 </span>
+                            <div class="flex space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                                <span class="text-gray-300">4.5</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 7 -->
+                    <div class="product-card rounded-xl p-6 transition-all duration-300" data-tilt data-tilt-scale="1.05">
+                        <div class="relative h-48 w-full mb-4 rounded-lg overflow-hidden">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d1da95d5-45f0-44fb-b6a8-524c397c2499.png" alt="Aluminum CNC machined foot pegs with rubber inserts and aggressive design" class="w-full h-full object-cover">
+                            <div class="a
