@@ -188,11 +188,47 @@
             <div class="container mx-auto px-4 absolute inset-0 flex flex-col justify-center">
                 <div class="max-w-2xl">
                     <h1 class="text-5xl md:text-7xl font-bold text-white mb-4 logo">RIDE <span class="text-orange-500">CUSTOM</span></h1>
-                    <p class="text-lg text-gray-300 mb-8">Premium motorcycle modifications and accessories for the ultimate riding experience. Enhance your bike's performance and style with our exclusive parts.</p>
-                    <a href="#products" class="bg-orange-500 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-orange-600 transition inline-block">Shop Now</a>
+
+                    <!-- Fade Slider Start -->
+                    <div id="fadeSlider" class="relative w-full max-w-4xl mx-auto mb-6 h-64 rounded-lg overflow-hidden shadow-lg">
+                        <div class="absolute inset-0 transition-opacity duration-1000 opacity-100" style="background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80') center center/cover no-repeat;" data-index="0">
+                            <div class="absolute bottom-4 left-4 bg-orange-500 bg-opacity-80 text-white px-4 py-2 rounded">Diwali Offer 20% Off</div>
+                        </div>
+                        <div class="absolute inset-0 transition-opacity duration-1000 opacity-0" style="background: url('https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=800&q=80') center center/cover no-repeat;" data-index="1">
+                            <div class="absolute bottom-4 left-4 bg-orange-500 bg-opacity-80 text-white px-4 py-2 rounded">Ramzan Offer 15% Off</div>
+                        </div>
+                        <div class="absolute inset-0 transition-opacity duration-1000 opacity-0" style="background: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80') center center/cover no-repeat;" data-index="2">
+                            <div class="absolute bottom-4 left-4 bg-orange-500 bg-opacity-80 text-white px-4 py-2 rounded">Ride in Style - 25% Discount</div>
+                        </div>
+                        <div class="absolute inset-0 transition-opacity duration-1000 opacity-0" style="background: url('https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?auto=format&fit=crop&w=800&q=80') center center/cover no-repeat;" data-index="3">
+                            <div class="absolute bottom-4 left-4 bg-orange-500 bg-opacity-80 text-white px-4 py-2 rounded">Limited Time Offer - 30% Off</div>
+                        </div>
+                        <div class="absolute inset-0 transition-opacity duration-1000 opacity-0" style="background: url('https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=800&q=80') center center/cover no-repeat;" data-index="4">
+                            <div class="absolute bottom-4 left-4 bg-orange-500 bg-opacity-80 text-white px-4 py-2 rounded">Exclusive Festive Deal - 20% Off</div>
+                        </div>
+                    </div>
+                    <!-- Fade Slider End -->
                 </div>
             </div>
         </section>
+    <script>
+        const slides = document.querySelectorAll('#fadeSlider > div');
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.style.opacity = i === index ? '1' : '0';
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+        }
+
+        setInterval(nextSlide, 5000);
+    </script>
 
         <!-- Products Section -->
         <section id="products" class="py-16 bg-gradient-to-b from-gray-900 to-black">
@@ -474,4 +510,3 @@
                                 <span class="text-gray-300">4.2</span>
                             </div>
                         </div>
-
