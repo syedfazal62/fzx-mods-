@@ -28,41 +28,65 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderCart() {
-        cartWindow.innerHTML = '<h2 class="text-2xl font-bold mb-4">Your Cart</h2>';
+        let cartContent = '';
         if (Object.keys(cart).length === 0) {
-            cartWindow.innerHTML += '<p>Your cart is empty.</p>';
-            return;
+            cartContent = '<p>Your cart is empty.</p>';
+        } else {
+            const ul = document.createElement('ul');
+            ul.classList.add('space-y-6');
+            Object.values(cart).forEach(item => {
+                const li = document.createElement('li');
+                li.classList.add('flex', 'justify-between', 'items-center', 'bg-gray-900', 'p-4', 'rounded-lg', 'shadow-lg', 'hover:shadow-orange-500/50', 'transition-shadow');
+                li.innerHTML = `
+                    <div class="flex items-center space-x-4">
+                        <img src="https://via.placeholder.com/60" alt="${item.name}" class="w-16 h-16 rounded object-cover shadow-md" />
+                        <div>
+                            <h3 class="font-semibold text-lg">${item.name}</h3>
+                            <p class="text-orange-500 font-bold">Rs ${item.price}</p>
+                            <p class="text-gray-400">Quantity: ${item.quantity}</p>
+                        </div>
+                    </div>
+                    <button class="remove-item bg-red-600 px-3 py-1 rounded text-white hover:bg-red-700 transition" data-product="${item.id}">Remove</button>
+                `;
+                ul.appendChild(li);
+            });
+            cartContent = ul.outerHTML;
         }
-        const ul = document.createElement('ul');
-        ul.classList.add('space-y-4');
-        Object.values(cart).forEach(item => {
-            const li = document.createElement('li');
-            li.classList.add('flex', 'justify-between', 'items-center', 'bg-gray-800', 'p-3', 'rounded');
-            li.innerHTML = `
-                <div>
-                    <h3 class="font-semibold">${item.name}</h3>
-                    <p>Price: Rs ${item.price}</p>
-                    <p>Quantity: ${item.quantity}</p>
-                </div>
-                <button class="remove-item bg-red-600 px-2 py-1 rounded text-white" data-product="${item.id}">Remove</button>
-            `;
-            ul.appendChild(li);
-        });
-        cartWindow.appendChild(ul);
 
-        // Add Buy Now button
-        const buyNowBtn = document.createElement('button');
-        buyNowBtn.textContent = 'Buy Now';
-        buyNowBtn.classList.add('bg-red-600', 'text-white', 'px-4', 'py-2', 'rounded', 'mt-4', 'w-full');
-        buyNowBtn.addEventListener('click', () => {
-            alert('Thank you for your purchase!');
-            cart = {};
-            saveCart();
-            updateCartCount();
-            renderCart();
-            cartWindow.classList.remove('active');
-        });
-        cartWindow.appendChild(buyNowBtn);
+        cartWindow.innerHTML = `
+            <div class="cart-header flex items-center mb-6">
+                <a href="#home" class="back-arrow mr-4 cursor-pointer hover:text-orange-500 transition" title="Back to Home">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </a>
+                <h2 class="text-3xl font-bold">Your Cart</h2>
+            </div>
+            ${cartContent}
+            <button class="buy-now bg-orange-500 text-white px-5 py-3 rounded-lg mt-6 w-full font-semibold hover:bg-orange-600 transition">Buy Now</button>
+        `;
+
+        // Add event listener for back arrow to close cart (always add regardless of cart content)
+        const backArrow = cartWindow.querySelector('.back-arrow');
+        if (backArrow) {
+            backArrow.addEventListener('click', (e) => {
+                e.preventDefault();
+                cartWindow.classList.remove('active');
+            });
+        }
+
+        // Add event listener for buy now button
+        const buyNowBtn = cartWindow.querySelector('.buy-now');
+        if (buyNowBtn) {
+            buyNowBtn.addEventListener('click', () => {
+                alert('Thank you for your purchase!');
+                cart = {};
+                saveCart();
+                updateCartCount();
+                renderCart();
+                cartWindow.classList.remove('active');
+            });
+        }
 
         // Add event listeners for remove buttons
         const removeButtons = cartWindow.querySelectorAll('.remove-item');
@@ -115,4 +139,5 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCartCount();
     renderCart();
 });
+
 
