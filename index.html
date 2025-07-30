@@ -36,7 +36,7 @@
         
         .product-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(255, 62, 0, 0.3);
+            box-shadow: 0 10px 20px rgba(241, 18, 18, 0.3);
         }
         
         #bikeScene {
@@ -161,9 +161,7 @@
                 <div class="hidden md:flex space-x-6">
                     <a href="#home" class="text-white hover:text-orange-500 transition">Home</a>
                     <a href="#products" class="text-white hover:text-orange-500 transition">Products</a>
-                    <a href="#about" class="text-white hover:text-orange-500 transition">About</a>
-                    <a href="#contact" class="text-white hover:text-orange-500 transition">Contact</a>
-                </div>
+                                            </div>
                 <div class="flex items-center space-x-4">
                     <button class="cart-btn text-white p-2 relative">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -171,7 +169,8 @@
                         </svg>
                         <div class="cart-count hidden">0</div>
                     </button>
-                    <button class="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition">Login</button>
+                    <button class="login-btn bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition">Login</button>
+                    <script src="login.js"></script>
                     <button class="md:hidden text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
@@ -191,20 +190,20 @@
 
                     <!-- Fade Slider Start -->
                     <div id="fadeSlider" class="relative w-full max-w-4xl mx-auto mb-6 h-64 rounded-lg overflow-hidden shadow-lg">
-                        <div class="absolute inset-0 transition-opacity duration-1000 opacity-100" style="background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80') center center/cover no-repeat;" data-index="0">
+                        <div class="absolute inset-0 transition-opacity duration-1000 opacity-100" style="background: url(images/fzx.jpg)  center center/cover no-repeat;" data-index="0">
                             <div class="absolute bottom-4 left-4 bg-orange-500 bg-opacity-80 text-white px-4 py-2 rounded">Diwali Offer 20% Off</div>
                         </div>
                         <div class="absolute inset-0 transition-opacity duration-1000 opacity-0" style="background: url('https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=800&q=80') center center/cover no-repeat;" data-index="1">
-                            <div class="absolute bottom-4 left-4 bg-orange-500 bg-opacity-80 text-white px-4 py-2 rounded">Ramzan Offer 30% Off</div>
+                            <div class="absolute bottom-4 left-4 bg-orange-500 bg-opacity-80 text-white px-4 py-2 rounded">Ramzan Offer 15% Off</div>
                         </div>
                         <div class="absolute inset-0 transition-opacity duration-1000 opacity-0" style="background: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80') center center/cover no-repeat;" data-index="2">
-                            <div class="absolute bottom-4 left-4 bg-orange-500 bg-opacity-80 text-white px-4 py-2 rounded">launch offer - 25% Discount</div>
+                            <div class="absolute bottom-4 left-4 bg-orange-500 bg-opacity-80 text-white px-4 py-2 rounded">Ride in Style - 25% Discount</div>
                         </div>
                         <div class="absolute inset-0 transition-opacity duration-1000 opacity-0" style="background: url('https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?auto=format&fit=crop&w=800&q=80') center center/cover no-repeat;" data-index="3">
-                            <div class="absolute bottom-4 left-4 bg-orange-500 bg-opacity-80 text-white px-4 py-2 rounded">Limited Time Offer - 20% Off</div>
+                            <div class="absolute bottom-4 left-4 bg-orange-500 bg-opacity-80 text-white px-4 py-2 rounded">Limited Time Offer - 30% Off</div>
                         </div>
                         <div class="absolute inset-0 transition-opacity duration-1000 opacity-0" style="background: url('https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=800&q=80') center center/cover no-repeat;" data-index="4">
-                            <div class="absolute bottom-4 left-4 bg-orange-500 bg-opacity-80 text-white px-4 py-2 rounded">Exclusive Festive Deal - 15% Off</div>
+                            <div class="absolute bottom-4 left-4 bg-orange-500 bg-opacity-80 text-white px-4 py-2 rounded">Exclusive Festive Deal - 20% Off</div>
                         </div>
                     </div>
                     <!-- Fade Slider End -->
@@ -232,6 +231,8 @@
 
         <!-- Products Section -->
         <section id="products" class="py-16 bg-gradient-to-b from-gray-900 to-black">
+    </section>
+    <script src="cart.js"></script>
             <div class="container mx-auto px-4">
                 <div class="text-center mb-12">
                     <h2 class="text-4xl font-bold text-white mb-4">OUR PRODUCTS</h2>
