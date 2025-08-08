@@ -93,7 +93,24 @@
             padding: 20px;
             overflow-y: auto;
         }
-        
+
+        /* Cart header with back arrow */
+        .cart-header {
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 12px;
+        }
+
+        .back-arrow svg {
+            stroke: var(--primary);
+            width: 28px;
+            height: 28px;
+            transition: stroke 0.3s ease;
+        }
+
+        .back-arrow:hover svg {
+            stroke: #ff6a00;
+        }
+
         .cart-window.active {
             right: 0;
         }
@@ -190,7 +207,7 @@
 
                     <!-- Fade Slider Start -->
                     <div id="fadeSlider" class="relative w-full max-w-4xl mx-auto mb-6 h-64 rounded-lg overflow-hidden shadow-lg">
-                        <div class="absolute inset-0 transition-opacity duration-1000 opacity-100" style="background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80')  center center/cover no-repeat;" data-index="0">
+                        <div class="absolute inset-0 transition-opacity duration-1000 opacity-100" style="background: url(images/fzx.jpg)  center center/cover no-repeat;" data-index="0">
                             <div class="absolute bottom-4 left-4 bg-orange-500 bg-opacity-80 text-white px-4 py-2 rounded">Diwali Offer 20% Off</div>
                         </div>
                         <div class="absolute inset-0 transition-opacity duration-1000 opacity-0" style="background: url('https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=800&q=80') center center/cover no-repeat;" data-index="1">
